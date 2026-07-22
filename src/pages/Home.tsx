@@ -100,10 +100,13 @@ function StatCard({ value, suffix, label, delay }: { value: number; suffix: stri
 }
 
 const HERO_IMG = 'https://images.pexels.com/photos/13296053/pexels-photo-13296053.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400';
+const WORKSHOP_VIDEO = './media/workshop-video.mp4';
+const VIDEO_POSTER = './works/photo_2026-07-22_12-40-54.jpg';
 
 export default function Home() {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [typedText, setTypedText] = useState('');
+  const [videoStarted, setVideoStarted] = useState(false);
   const fullText = 'МЕТАЛЛ. ДЕРЕВО. БУДУЩЕЕ.';
 
   useEffect(() => {
@@ -256,6 +259,46 @@ export default function Home() {
             <rect x="7" y="1" width="2" height="22" fill="rgba(0,255,255,0.2)" />
             <path d="M4 18 L8 22 L12 18" stroke="#00FFFF" strokeWidth="1.5" fill="none" style={{ filter: 'drop-shadow(0 0 4px #00FFFF)' }} />
           </svg>
+        </div>
+      </section>
+
+      {/* ===== WORKSHOP VIDEO ===== */}
+      <section style={{
+        padding: '84px 24px', position: 'relative', overflow: 'hidden',
+        borderBottom: '1px solid rgba(255, 0, 255, 0.14)', background: 'linear-gradient(120deg, #060606 0%, #0d0610 52%, #050a0b 100%)',
+      }}>
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          backgroundImage: 'linear-gradient(rgba(255,0,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,.02) 1px, transparent 1px)',
+          backgroundSize: '52px 52px',
+        }} />
+        <div style={{ maxWidth: '1060px', margin: '0 auto', position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', alignItems: 'center', gap: 'clamp(36px, 8vw, 100px)' }}>
+          <div>
+            <div className="section-tag" style={{ marginBottom: '16px' }}>// WORKSHOP_IN_MOTION</div>
+            <h2 className="section-title" style={{ fontSize: 'clamp(1.8rem, 4vw, 3.3rem)', color: '#fff', marginBottom: '18px' }}>
+              МАСТЕРСКАЯ<br /><span className="neon-magenta">В ДВИЖЕНИИ</span>
+            </h2>
+            <p style={{ fontFamily: 'Rajdhani, sans-serif', fontSize: '18px', lineHeight: 1.65, color: 'rgba(224,224,224,.65)', maxWidth: '420px', marginBottom: '26px' }}>
+              Короткое видео из мира STEMI CUSTOM. Посмотрите атмосферу, детали и характер наших проектов.
+            </p>
+            <div style={{ fontFamily: 'Share Tech Mono, monospace', color: '#00ffff', fontSize: '11px', letterSpacing: '2px' }}>VERTICAL SHOWREEL :: 00:54</div>
+          </div>
+
+          <div style={{ justifySelf: 'center', width: 'min(100%, 360px)', aspectRatio: '9 / 16', position: 'relative', border: '1px solid rgba(0,255,255,.55)', background: '#020202', boxShadow: '0 0 22px rgba(0,255,255,.16), 0 0 48px rgba(255,0,255,.12)' }}>
+            {videoStarted ? (
+              <video controls autoPlay playsInline preload="metadata" style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover', background: '#000' }}>
+                <source src={WORKSHOP_VIDEO} type="video/mp4" />
+                Ваш браузер не поддерживает воспроизведение видео.
+              </video>
+            ) : (
+              <button type="button" onClick={() => setVideoStarted(true)} aria-label="Запустить видео о мастерской" style={{ position: 'relative', width: '100%', height: '100%', padding: 0, border: 0, cursor: 'pointer', overflow: 'hidden', background: '#020202' }}>
+                <img src={VIDEO_POSTER} alt="Видео о мастерской STEMI CUSTOM" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(.48) saturate(.78)', transition: 'transform .45s ease, filter .45s ease' }} />
+                <span style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,.08) 25%, rgba(0,0,0,.88) 100%)' }} />
+                <span style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: '74px', height: '74px', display: 'grid', placeItems: 'center', border: '1px solid #00ffff', color: '#00ffff', background: 'rgba(0,0,0,.64)', boxShadow: '0 0 20px rgba(0,255,255,.55)', fontFamily: 'Share Tech Mono, monospace', fontSize: '21px', paddingLeft: '3px' }}>▶</span>
+                <span style={{ position: 'absolute', left: '20px', bottom: '20px', textAlign: 'left', fontFamily: 'Share Tech Mono, monospace', color: '#fff', fontSize: '11px', lineHeight: 1.5, letterSpacing: '1.5px' }}>СМОТРЕТЬ ВИДЕО<br /><span style={{ color: '#ff00ff' }}>НАЖМИТЕ ДЛЯ ЗАПУСКА</span></span>
+              </button>
+            )}
+          </div>
         </div>
       </section>
 
