@@ -1,4 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+const YANDEX_MAP_SCRIPT = 'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A3ffc49d07a152e2698eafd4d866df6c337542a539843a0433e8cc3825a1b34e6&width=650&height=500&lang=ru_RU&scroll=true';
+
+function YandexMap() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.charset = 'utf-8';
+    script.async = true;
+    script.src = YANDEX_MAP_SCRIPT;
+    container.appendChild(script);
+
+    const fitMapToContainer = () => {
+      container.querySelectorAll('iframe').forEach(frame => {
+        frame.style.width = '100%';
+        frame.style.maxWidth = '650px';
+        frame.style.height = '500px';
+        frame.style.border = '0';
+      });
+    };
+    const observer = new MutationObserver(fitMapToContainer);
+    observer.observe(container, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      container.replaceChildren();
+    };
+  }, []);
+
+  return <div ref={containerRef} aria-label="Interactive map" style={{ width: '100%', minHeight: '500px', display: 'flex', justifyContent: 'center' }} />;
+}
 
 export default function Contacts() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', message: '', service: '' });
@@ -97,18 +133,18 @@ export default function Contacts() {
               {
                 icon: '📞',
                 label: 'Телефон',
-                value: '+7 (985) 123-45-67',
+                value: '+7 (929) 538-74-38',
                 sub: 'Пн–Пт: 10:00–19:00',
                 color: '#FFD700',
-                href: 'tel:+79851234567',
+                href: 'tel:+79295387438',
               },
               {
                 icon: '✉️',
                 label: 'Email',
-                value: 'info@stemicustom.ru',
+                value: 'dir@stemicustom.ru',
                 sub: 'Ответим в течение 2 часов',
                 color: '#00FFFF',
-                href: 'mailto:info@stemicustom.ru',
+                href: 'mailto:stemicraft@ya.ru',
               },
               {
                 icon: '📍',
@@ -221,15 +257,17 @@ export default function Contacts() {
               </div>
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 {[
-                  { label: 'ВКонтакте', icon: 'VK', color: '#00FFFF', href: '#' },
-                  { label: 'Telegram', icon: 'TG', color: '#00FFFF', href: '#' },
-                  { label: 'WhatsApp', icon: 'WA', color: '#FFD700', href: '#' },
-                  { label: 'YouTube', icon: 'YT', color: '#FF00FF', href: '#' },
+                  { label: 'ВКонтакте', icon: 'VK', color: '#00FFFF', href: 'https://vk.com/stemi_craft' },
+                  { label: 'Telegram', icon: 'TG', color: '#00FFFF', href: 'https://telegram.me/vladi61' },
+                  { label: 'WhatsApp', icon: 'WA', color: '#FFD700', href: 'https://api.whatsapp.com/send/?phone=79295387438&text=Здравствуйте.&type=phone_number&app_absent=0' },
+                  { label: 'YouTube', icon: 'YT', color: '#FF00FF', href: 'https://www.youtube.com/@stemicraft' },
                 ].map(s => (
                   <a
                     key={s.label}
                     href={s.href}
                     title={s.label}
+                    target="_blank"
+                    rel="noreferrer"
                     style={{
                       display: 'flex', alignItems: 'center', gap: '8px',
                       padding: '8px 16px',
@@ -258,6 +296,33 @@ export default function Contacts() {
                   </a>
                 ))}
               </div>
+            </div>
+
+            <div style={{
+              marginTop: '28px',
+              padding: '18px 20px',
+              border: '1px solid rgba(255,215,0,0.2)',
+              background: 'rgba(0,0,0,0.52)',
+              boxShadow: '0 0 14px rgba(255,215,0,0.06)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '18px',
+              flexWrap: 'wrap',
+            }}>
+              <div>
+                <div style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '9px', letterSpacing: '2px', color: '#FFD700', marginBottom: '6px' }}>// YANDEX_ORGANIZATION_RATING</div>
+                <div style={{ fontFamily: 'Rajdhani, sans-serif', color: 'rgba(224,224,224,0.62)', fontSize: '14px' }}>Рейтинг организации в Яндексе</div>
+              </div>
+              <iframe
+                title="Рейтинг организации STEMI CUSTOM в Яндексе"
+                src="https://yandex.ru/sprav/widget/rating-badge/52649088626?type=rating&theme=dark"
+                width="150"
+                height="50"
+                frameBorder="0"
+                loading="lazy"
+                style={{ display: 'block', border: 0 }}
+              />
             </div>
           </div>
 
@@ -502,13 +567,14 @@ export default function Contacts() {
         {/* Map placeholder */}
         <div style={{ marginTop: '80px' }}>
           <div className="section-tag" style={{ marginBottom: '20px' }}>// LOCATION_MATRIX</div>
+          <YandexMap />
           <div style={{
+            display: 'none',
             position: 'relative',
             height: '300px',
             border: '1px solid rgba(0,255,255,0.15)',
             background: 'rgba(0,0,0,0.8)',
             overflow: 'hidden',
-            display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
